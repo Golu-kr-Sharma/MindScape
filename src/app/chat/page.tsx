@@ -8,6 +8,7 @@ import { EmergencyHelplines } from '@/components/chat/emergency-helplines';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Terminal } from 'lucide-react';
 import { detectEmergency, EmergencyDetectionOutput } from '@/ai/flows/emergency-detection';
+import { aiChatSupport, AIChatSupportInput, AIChatSupportOutput } from '@/ai/ai-chat-support';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export type Message = {
@@ -54,8 +55,12 @@ export default function ChatPage() {
         setMessages(prev => [...prev, aiMessage]);
       } else {
         setIsEmergency(false);
-        // Mock Gemini response
-        const aiMessage: Message = { id: Date.now().toString(), text: "Thank you for sharing that. Can you tell me more about what's on your mind?", sender: 'ai' };
+        const aiChatInput: AIChatSupportInput = {
+            message: text,
+            userId: user?.email,
+        };
+        const aiResult: AIChatSupportOutput = await aiChatSupport(aiChatInput);
+        const aiMessage: Message = { id: Date.now().toString(), text: aiResult.response, sender: 'ai' };
         setMessages(prev => [...prev, aiMessage]);
       }
     } catch (error) {
