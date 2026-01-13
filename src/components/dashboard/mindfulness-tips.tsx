@@ -14,11 +14,13 @@ const tips = [
   "Listen to a piece of music without any distractions. Let it be your only focus."
 ];
 
-export function MindfulnessTips() {
-  const [currentTip, setCurrentTip] = useState(tips[0]);
-  const tipImage = PlaceHolderImages.find(p => p.id === 'mindfulness-tip-1');
+export function MindfulnessTips({ className }: { className?: string }) {
+  const [currentTip, setCurrentTip] = useState("");
 
   useEffect(() => {
+    // This will only run on the client, after initial hydration
+    setCurrentTip(tips[Math.floor(Math.random() * tips.length)]);
+
     const interval = setInterval(() => {
       const randomIndex = Math.floor(Math.random() * tips.length);
       setCurrentTip(tips[randomIndex]);
@@ -26,9 +28,10 @@ export function MindfulnessTips() {
     return () => clearInterval(interval);
   }, []);
 
+  const tipImage = PlaceHolderImages.find(p => p.id === 'mindfulness-tip-1');
 
   return (
-    <Card className="glass-card relative overflow-hidden group">
+    <Card className={`glass-card relative overflow-hidden group ${className}`}>
       {tipImage && (
         <Image
           src={tipImage.imageUrl}
@@ -48,7 +51,15 @@ export function MindfulnessTips() {
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0 mt-4 flex-1 flex items-center">
-          <p className="text-lg font-medium text-white/90">{currentTip}</p>
+          {currentTip ? (
+             <p className="text-lg font-medium text-white/90">{currentTip}</p>
+          ): (
+            <div className="space-y-2 w-full">
+                <div className="h-4 bg-white/20 rounded w-full animate-pulse"></div>
+                <div className="h-4 bg-white/20 rounded w-5/6 animate-pulse"></div>
+                <div className="h-4 bg-white/20 rounded w-3/4 animate-pulse"></div>
+            </div>
+          )}
         </CardContent>
       </div>
     </Card>

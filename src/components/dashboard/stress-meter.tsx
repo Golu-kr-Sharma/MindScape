@@ -7,7 +7,7 @@ export function StressMeter() {
   const [stressLevel, setStressLevel] = useState(0);
 
   useEffect(() => {
-    // Simulate fetching stress level
+    // This will only run on the client, after initial hydration
     const randomStress = Math.floor(Math.random() * 101);
     setStressLevel(randomStress);
   }, []);
@@ -56,10 +56,16 @@ export function StressMeter() {
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-4xl font-bold font-headline" style={{ color: getStressColor(stressLevel) }}>
-              {stressLevel}
-            </span>
-            <span className="text-xs text-muted-foreground">/ 100</span>
+             {stressLevel > 0 ? (
+              <>
+                <span className="text-4xl font-bold font-headline" style={{ color: getStressColor(stressLevel) }}>
+                  {stressLevel}
+                </span>
+                <span className="text-xs text-muted-foreground">/ 100</span>
+              </>
+            ) : (
+                <div className="h-8 bg-white/20 rounded w-12 animate-pulse"></div>
+            )}
           </div>
         </div>
       </CardContent>
