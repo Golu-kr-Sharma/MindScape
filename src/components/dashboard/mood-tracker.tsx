@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { ChartTooltipContent } from '../ui/chart';
+import { ChartContainer, ChartTooltipContent, type ChartConfig } from '../ui/chart';
 
 const moodData = [
   { date: 'Mon', mood: 4 },
@@ -23,6 +23,14 @@ const moods = [
   { emoji: '🙂', level: 4, label: 'Good' },
   { emoji: '😄', level: 5, label: 'Great' },
 ];
+
+const chartConfig = {
+  mood: {
+    label: 'Mood',
+    color: 'hsl(var(--primary))',
+  },
+} satisfies ChartConfig;
+
 
 export function MoodTracker({ className }: { className?: string }) {
   const [selectedMood, setSelectedMood] = useState<number | null>(null);
@@ -56,15 +64,15 @@ export function MoodTracker({ className }: { className?: string }) {
         <div className="mt-6">
           <h3 className="text-sm font-medium text-muted-foreground mb-2">Your week in moods</h3>
           <div className="h-[150px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={moodData} margin={{ top: 5, right: 20, left: -20, bottom: -10 }}>
+            <ChartContainer config={chartConfig} className="w-full h-full">
+              <BarChart accessibilityLayer data={moodData} margin={{ top: 5, right: 20, left: -20, bottom: -10 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border) / 0.5)" />
                 <XAxis dataKey="date" tickLine={false} axisLine={false} tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} />
                 <YAxis domain={[0, 5]} hide={true} />
                 <Tooltip
                   cursor={{ fill: 'hsl(var(--primary) / 0.1)' }}
                   content={<ChartTooltipContent
-                    formatter={(value, name) => (
+                    formatter={(value) => (
                       <div className="flex flex-col">
                         <span className="text-xs text-muted-foreground">{moods.find(m => m.level === value)?.label}</span>
                         <span className="font-bold text-lg">{moods.find(m => m.level === value)?.emoji}</span>
@@ -73,9 +81,9 @@ export function MoodTracker({ className }: { className?: string }) {
                     labelFormatter={() => ''}
                   />}
                 />
-                <Bar dataKey="mood" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="mood" fill="var(--color-mood)" radius={[4, 4, 0, 0]} />
               </BarChart>
-            </ResponsiveContainer>
+            </ChartContainer>
           </div>
         </div>
       </CardContent>
