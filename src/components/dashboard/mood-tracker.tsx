@@ -72,12 +72,16 @@ export function MoodTracker({ className }: { className?: string }) {
                 <Tooltip
                   cursor={{ fill: 'hsl(var(--primary) / 0.1)' }}
                   content={<ChartTooltipContent
-                    formatter={(value) => (
-                      <div className="flex flex-col">
-                        <span className="text-xs text-muted-foreground">{moods.find(m => m.level === value)?.label}</span>
-                        <span className="font-bold text-lg">{moods.find(m => m.level === value)?.emoji}</span>
-                      </div>
-                    )}
+                    formatter={(value) => {
+                      const mood = moods.find(m => m.level === Number(value));
+                      if (!mood) return null;
+                      return (
+                        <div className="flex flex-col">
+                          <span className="text-xs text-muted-foreground">{mood.label}</span>
+                          <span className="font-bold text-lg">{mood.emoji}</span>
+                        </div>
+                      );
+                    }}
                     labelFormatter={() => ''}
                   />}
                 />
