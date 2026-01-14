@@ -1,8 +1,8 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/.pnp
+# ===============================
+# Dependencies
+# ===============================
+node_modules/
+.pnp/
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -10,36 +10,63 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
-/coverage
+# ===============================
+# Build & Production
+# ===============================
+.next/
+out/
+build/
+dist/
 
-# next.js
-/.next/
-/out/
+# ===============================
+# Testing
+# ===============================
+coverage/
 
-# production
-/build
+# ===============================
+# Environment Variables (Secrets)
+# ===============================
+.env
+.env.*
+!.env.example
 
-# misc
-.DS_Store
-*.pem
+# ===============================
+# Firebase
+# ===============================
+.firebase/
+firebase-debug.log
+firestore-debug.log
+database-debug.log
+storage-debug.log
 
-# debug
+# Firebase Admin SDK keys
+serviceAccountKey.json
+*.json.private
+
+# ===============================
+# Logs
+# ===============================
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+pnpm-debug.log*
 
-# vercel
-.vercel
+# ===============================
+# OS / Editor
+# ===============================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
 
-# typescript
+# ===============================
+# TypeScript
+# ===============================
 *.tsbuildinfo
 next-env.d.ts
 
-.genkit/*
-.env*
-
-# firebase
-firebase-debug.log
-firestore-debug.log
+# ===============================
+# Misc
+# ===============================
+*.pem
+*.key
